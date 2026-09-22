@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<ScrollPane fitToWidth="true" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="org.ni.edu.uam.examen1.controller.RegistroController">
+    <content>
+        <VBox alignment="TOP_CENTER" spacing="18.0">
+            <padding>
+                <Insets top="25.0" right="30.0" bottom="30.0" left="30.0"/>
+            </padding>
+
+            <!-- Contenedor del formulario -->
+            <VBox maxWidth="650.0" spacing="16.0">
+                <!-- Título y descripción -->
+                <VBox spacing="4.0">
+                    <Label text="Registro de Nuevo Préstamo">
+                        <font>
+                            <Font name="System Bold" size="20.0"/>
+                        </font>
+                    </Label>
+                    <Label text="Complete los datos del prestatario, recurso y período de préstamo." textFill="#555555"/>
+                </VBox>
+
+                <Separator/>
+
+                <!-- Formulario en cuadrícula -->
+                <GridPane hgap="15.0" vgap="14.0">
+                    <columnConstraints>
+                        <ColumnConstraints minWidth="160.0" prefWidth="180.0"/>
+                        <ColumnConstraints hgrow="ALWAYS" minWidth="260.0" prefWidth="380.0"/>
+                    </columnConstraints>
+
+                    <!-- Fila 0: Usuario -->
+                    <Label text="Usuario / Prestatario:" GridPane.rowIndex="0" GridPane.columnIndex="0">
+                        <font>
+                            <Font name="System Bold" size="13.0"/>
+                        </font>
+                    </Label>
+                    <TextField fx:id="txtUsuario" promptText="Nombre completo o identificación"
+                               GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+                    <!-- Fila 1: Recurso -->
+                    <Label text="Recurso a Prestar:" GridPane.rowIndex="1" GridPane.columnIndex="0">
+                        <font>
+                            <Font name="System Bold" size="13.0"/>
+                        </font>
+                    </Label>
+                    <ComboBox fx:id="cmbRecurso" maxWidth="Infinity" promptText="Seleccione o escriba el recurso..."
+                              GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+                    <!-- Fila 2: Fecha de Préstamo -->
+                    <Label text="Fecha de Préstamo:" GridPane.rowIndex="2" GridPane.columnIndex="0">
+                        <font>
+                            <Font name="System Bold" size="13.0"/>
+                        </font>
+                    </Label>
+                    <DatePicker fx:id="dpFechaPrestamo" maxWidth="Infinity" promptText="dd/mm/aaaa"
+                                GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+                    <!-- Fila 3: Fecha de Devolución -->
+                    <Label text="Fecha de Devolución:" GridPane.rowIndex="3" GridPane.columnIndex="0">
+                        <font>
+                            <Font name="System Bold" size="13.0"/>
+                        </font>
+                    </Label>
+                    <DatePicker fx:id="dpFechaDevolucion" maxWidth="Infinity" promptText="dd/mm/aaaa"
+                                GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+                </GridPane>
+
+                <Separator/>
+
+                <!-- Mensaje de estado -->
+                <Label fx:id="lblMensaje" text="" wrapText="true"/>
+
+                <!-- Botones de Acción -->
+                <HBox alignment="CENTER_RIGHT" spacing="12.0">
+                    <Button text="Limpiar Formulario" onAction="#onBtnLimpiarClick" prefWidth="150.0"/>
+                    <Button text="Registrar Préstamo" onAction="#onBtnRegistrarClick" defaultButton="true" prefWidth="160.0"/>
+                </HBox>
+            </VBox>
+        </VBox>
+    </content>
+</ScrollPane>
