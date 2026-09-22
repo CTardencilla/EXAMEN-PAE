@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane prefHeight="680.0" prefWidth="980.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="org.ni.edu.uam.examen1.controller.MainController">
+    <!-- Barra Superior de Navegación -->
+    <top>
+        <VBox spacing="8.0">
+            <padding>
+                <Insets top="12.0" right="20.0" bottom="6.0" left="20.0"/>
+            </padding>
+            <Label text="Sistema de Gestión de Préstamos - UAM">
+                <font>
+                    <Font name="System Bold" size="18.0"/>
+                </font>
+            </Label>
+            <HBox spacing="10.0" alignment="CENTER_LEFT">
+                <Button fx:id="btnNavRegistro" text="1. Registrar Préstamo" onAction="#mostrarRegistro" prefHeight="32.0" prefWidth="170.0"/>
+                <Button fx:id="btnNavConsulta" text="2. Consultar Préstamos" onAction="#mostrarConsulta" prefHeight="32.0" prefWidth="170.0"/>
+            </HBox>
+            <Separator/>
+        </VBox>
+    </top>
+
+    <!-- Contenedor Central Dinámico -->
+    <center>
+        <StackPane fx:id="contentArea"/>
+    </center>
+
+    <!-- Pie de Página -->
+    <bottom>
+        <VBox>
+            <Separator/>
+            <HBox spacing="10.0" alignment="CENTER_LEFT">
+                <padding>
+                    <Insets top="6.0" right="15.0" bottom="6.0" left="15.0"/>
+                </padding>
+                <Label text="Examen PAE #1 • Sistema de Préstamos" textFill="#666666"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Label text="Puro JavaFX 21 • MVC" textFill="#666666"/>
+            </HBox>
+        </VBox>
+    </bottom>
+</BorderPane>

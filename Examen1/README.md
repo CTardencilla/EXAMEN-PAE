@@ -1,72 +1,71 @@
-# Examen PAE #1 - Base Inicial del Sistema de Préstamos
-### Entregable: Persona 1 (Arquitectura, Modelos y Servicios)
+# Sistema de Registro y Consulta de Préstamos
+### Examen PAE #1 - Universidad Americana (UAM)
 
-Este repositorio contiene la **base arquitectónica inicial** del sistema de gestión de préstamos, configurado para **Java 21** y **JavaFX 21**, sirviendo como punto de partida para que los demás integrantes desarrollen las capas de formularios, validaciones de interfaz y estilos.
-
----
-
-## 📦 Componentes y Entregables Desarrollados (Persona 1)
-
-1. **Configuración de Construcción y Módulos**:
-   - `pom.xml`: Configurado con Maven Compiler para **Java 21**, dependencias de **JavaFX 21** (`javafx-controls`, `javafx-fxml`) y **JUnit 5.12.1**.
-   - `src/main/java/module-info.java`: Módulo Java configurado, abriendo el paquete `model` a `javafx.base` (para enlaces de propiedades en tablas) y exportando `model` y `service`.
-
-2. **Capa de Modelo**:
-   - `org.ni.edu.uam.examen1.model.EstadoPrestamo`: Enumeración con los estados del préstamo (`ACTIVO`, `DEVUELTO`, `VENCIDO`).
-   - `org.ni.edu.uam.examen1.model.Prestamo`: Entidad de datos con ID, prestatario/usuario, recurso, fecha de préstamo (`LocalDate`), fecha de devolución (`LocalDate`), estado y métodos de negocio (cálculo de días restantes, validación de vencimiento y formateo `dd/MM/yyyy`).
-
-3. **Capa de Servicio y Persistencia en Memoria**:
-   - `org.ni.edu.uam.examen1.service.PrestamoService`:
-     - Implementación con patrón **Singleton** para compartir el estado común de la aplicación.
-     - Persistencia en memoria basada en **`ObservableList<Prestamo>`** (preparada para conectarse directamente a controles JavaFX como `TableView` o `ListView`).
-     - **Carga de datos semilla iniciales** con préstamos en diferentes estados (activos, por vencer, vencidos y devueltos) para pruebas inmediatas.
-     - Métodos de negocio: `registrarPrestamo()`, `marcarComoDevuelto()`, `eliminarPrestamo()` y conteo de métricas (`getCantidadActivos()`, `getCantidadDevueltos()`, `getCantidadVencidos()`, `getTotalPrestamos()`).
-
-4. **Pruebas Unitarias**:
-   - `src/test/java/org/ni/edu/uam/examen1/PrestamoServiceTest.java`: Conjunto de pruebas unitarias automatizadas con **JUnit 5** que verifican:
-     - Carga correcta de datos semilla.
-     - Registro y generación de IDs incrementales.
-     - Validación de campos obligatorios vacíos o nulos.
-     - Validación de coherencia de fechas (fecha de devolución no anterior a fecha de préstamo).
-     - Actualización a estado devuelto.
-     - Eliminación de registros.
+Aplicación de escritorio desarrollada en **JavaFX 21** con **Java 21**, estructurada bajo el patrón arquitectónico **MVC (Modelo - Vista - Controlador)** utilizando **puro JavaFX (sin hojas de estilo CSS)** y persistencia observable en memoria.
 
 ---
 
-## 📁 Estructura Actual de Archivos
+## 📋 Módulos y Funcionalidades
 
-```
-Examen1/
-├── pom.xml                                           # Configuración Java 21 / JavaFX 21
-├── src/
-│   ├── main/
-│   │   └── java/
-│   │       ├── module-info.java                      # Descriptor de módulos
-│   │       └── org/ni/edu/uam/examen1/
-│   │           ├── model/
-│   │           │   ├── EstadoPrestamo.java           # Enum de estados
-│   │           │   └── Prestamo.java                 # Modelo de datos del préstamo
-│   │           └── service/
-│   │               └── PrestamoService.java          # Servicio y ObservableList en memoria
-│   └── test/
-│       └── java/org/ni/edu/uam/examen1/
-│           └── PrestamoServiceTest.java              # Pruebas unitarias con JUnit 5
-└── README.md
-```
+### 1. Formulario #1: Registro de Préstamos (`registro-view.fxml` / `RegistroController.java`)
+- **Controles nativos de JavaFX**:
+  - `TextField` para el nombre o identificación del usuario/prestatario.
+  - `ComboBox` editable precargado con recursos sugeridos (laptops, proyectores, libros, etc.) y opción de entrada libre.
+  - `DatePicker` para la fecha de préstamo (inicializada con la fecha actual).
+  - `DatePicker` para la fecha límite de devolución (sugerida a 7 días).
+- **Validaciones implementadas**:
+  - Nombre de usuario obligatorio y con longitud mínima de 3 caracteres.
+  - Recurso a prestar obligatorio.
+  - Fechas de préstamo y devolución obligatorias.
+  - **Coherencia cronológica**: La fecha de devolución no puede ser anterior a la fecha de préstamo.
+  - Notificaciones de error o confirmación mediante diálogos nativos `Alert` (`AlertUtils`).
+- **Acciones**:
+  - `Registrar Préstamo`: Valida, asigna ID incremental, almacena en `PrestamoService` y limpia campos.
+  - `Limpiar Formulario`: Restablece los campos a sus valores por defecto.
+
+### 2. Formulario #2: Consulta y Seguimiento (`consulta-view.fxml` / `ConsultaController.java`)
+- **Panel de Métricas en Vivo**: Contadores para Total de Préstamos, Activos, Devueltos y Vencidos.
+- **Búsqueda y Filtros en Tiempo Real**:
+  - Campo de texto de búsqueda reactiva por usuario, recurso o ID (utilizando `FilteredList`).
+  - Selector de estado (`Todos`, `Activo`, `Devuelto`, `Vencido`).
+  - Botón para reiniciar filtros.
+- **Tabla Dinámica (`TableView<Prestamo>`)**:
+  - Columnas: ID, Usuario, Recurso, Fecha Préstamo (`dd/MM/yyyy`), Fecha Devolución (`dd/MM/yyyy`), Estado y Seguimiento temporal.
+- **Acciones sobre Registros**:
+  - `Marcar como Devuelto`: Valida selección previa, impide re-devoluciones y actualiza el estado.
+  - `Eliminar Préstamo`: Remueve el registro tras diálogo modal de confirmación.
+
+### 3. Navegación Principal e Integración (`main-view.fxml` / `MainController.java` / `App.java`)
+- Navegación nativa con `BorderPane`, `StackPane` y botones superiores que permiten alternar fluidamente entre el Formulario de Registro y la Consulta.
+- Sincronización automática de datos entre formularios mediante `ObservableList` en el singleton `PrestamoService`.
+- **Cero dependencias CSS**: Construido enteramente con controles nativos Modena de JavaFX.
 
 ---
 
-## 🧪 Verificación y Pruebas
+## 👥 Colaboradores del Proyecto
 
-Para compilar el proyecto y ejecutar las pruebas unitarias:
+- **William** (`wigar2017@gmail.com`)
+- **CTardencilla** (`203885228+CTardencilla@users.noreply.github.com`)
+- **g-nzaan** (`216466001+g-nzaan@users.noreply.github.com`)
+- **rafaelhs07** (`211024110+rafaelhs07@users.noreply.github.com`)
 
-```bash
-mvn clean test
-```
+---
 
-Salida esperada:
-```
-[INFO] Running org.ni.edu.uam.examen1.PrestamoServiceTest
-[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0
-[INFO] BUILD SUCCESS
-```
+## 🚀 Compilación y Ejecución
+
+Desde la carpeta `Examen1/`:
+
+1. **Compilar el proyecto:**
+   ```bash
+   mvn clean compile
+   ```
+
+2. **Ejecutar las pruebas unitarias (12 tests):**
+   ```bash
+   mvn test
+   ```
+
+3. **Iniciar la aplicación:**
+   ```bash
+   mvn javafx:run
+   ```
