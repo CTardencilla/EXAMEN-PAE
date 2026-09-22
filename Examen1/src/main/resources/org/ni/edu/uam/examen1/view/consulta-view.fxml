@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<VBox spacing="14.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="org.ni.edu.uam.examen1.controller.ConsultaController">
+    <padding>
+        <Insets top="20.0" right="20.0" bottom="20.0" left="20.0"/>
+    </padding>
+
+    <!-- Título de la vista -->
+    <VBox spacing="4.0">
+        <Label text="Consulta y Seguimiento de Préstamos">
+            <font>
+                <Font name="System Bold" size="20.0"/>
+            </font>
+        </Label>
+        <Label text="Visualice, busque, filtre y actualice el estado de devoluciones de recursos." textFill="#555555"/>
+    </VBox>
+
+    <Separator/>
+
+    <!-- Panel de Métricas y Estadísticas -->
+    <HBox spacing="20.0" alignment="CENTER_LEFT">
+        <HBox spacing="6.0" alignment="CENTER_LEFT">
+            <Label text="Total Préstamos:">
+                <font>
+                    <Font name="System Bold" size="13.0"/>
+                </font>
+            </Label>
+            <Label fx:id="lblTotal" text="0"/>
+        </HBox>
+
+        <Separator orientation="VERTICAL"/>
+
+        <HBox spacing="6.0" alignment="CENTER_LEFT">
+            <Label text="Activos:">
+                <font>
+                    <Font name="System Bold" size="13.0"/>
+                </font>
+            </Label>
+            <Label fx:id="lblActivos" text="0"/>
+        </HBox>
+
+        <Separator orientation="VERTICAL"/>
+
+        <HBox spacing="6.0" alignment="CENTER_LEFT">
+            <Label text="Devueltos:">
+                <font>
+                    <Font name="System Bold" size="13.0"/>
+                </font>
+            </Label>
+            <Label fx:id="lblDevueltos" text="0"/>
+        </HBox>
+
+        <Separator orientation="VERTICAL"/>
+
+        <HBox spacing="6.0" alignment="CENTER_LEFT">
+            <Label text="Vencidos:">
+                <font>
+                    <Font name="System Bold" size="13.0"/>
+                </font>
+            </Label>
+            <Label fx:id="lblVencidos" text="0"/>
+        </HBox>
+    </HBox>
+
+    <Separator/>
+
+    <!-- Barra de Filtros y Búsqueda -->
+    <HBox spacing="10.0" alignment="CENTER_LEFT">
+        <Label text="Búsqueda:">
+            <font>
+                <Font name="System Bold" size="13.0"/>
+            </font>
+        </Label>
+        <TextField fx:id="txtBuscar" promptText="Buscar por usuario, recurso o ID..." HBox.hgrow="ALWAYS"/>
+
+        <Label text="Estado:">
+            <font>
+                <Font name="System Bold" size="13.0"/>
+            </font>
+        </Label>
+        <ComboBox fx:id="cmbFiltroEstado" prefWidth="140.0"/>
+
+        <Button text="Limpiar Filtros" onAction="#onBtnLimpiarFiltrosClick"/>
+    </HBox>
+
+    <!-- Tabla Principal de Préstamos -->
+    <TableView fx:id="tblPrestamos" VBox.vgrow="ALWAYS" minHeight="300.0">
+        <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+        </columnResizePolicy>
+        <columns>
+            <TableColumn fx:id="colId" text="ID" minWidth="50.0" prefWidth="60.0" maxWidth="80.0"/>
+            <TableColumn fx:id="colUsuario" text="Usuario / Prestatario" minWidth="150.0" prefWidth="190.0"/>
+            <TableColumn fx:id="colRecurso" text="Recurso Prestado" minWidth="160.0" prefWidth="220.0"/>
+            <TableColumn fx:id="colFechaPrestamo" text="F. Préstamo" minWidth="100.0" prefWidth="110.0"/>
+            <TableColumn fx:id="colFechaDevolucion" text="F. Devolución" minWidth="100.0" prefWidth="110.0"/>
+            <TableColumn fx:id="colEstado" text="Estado" minWidth="90.0" prefWidth="100.0"/>
+            <TableColumn fx:id="colDias" text="Seguimiento" minWidth="130.0" prefWidth="150.0"/>
+        </columns>
+    </TableView>
+
+    <!-- Barra Inferior de Acciones -->
+    <HBox spacing="10.0" alignment="CENTER_RIGHT">
+        <Button text="Eliminar Préstamo" onAction="#onBtnEliminarClick"/>
+        <Button text="Marcar como Devuelto" onAction="#onBtnMarcarDevueltoClick" defaultButton="true"/>
+    </HBox>
+</VBox>
